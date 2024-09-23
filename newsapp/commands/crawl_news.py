@@ -1,7 +1,5 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
 import time
 
 def crawl_news(keyword, page_number):
@@ -10,7 +8,7 @@ def crawl_news(keyword, page_number):
     chrome_options.add_argument('--no-sandbox')
     chrome_options.add_argument('--disable-dev-shm-usage')
 
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
+    driver = webdriver.Chrome(options=chrome_options)
 
     url = "https://www.dnews.co.kr/"
     results = []  # 결과를 저장할 배열
@@ -22,7 +20,7 @@ def crawl_news(keyword, page_number):
 
         # 검색어 입력 및 검색
         search_button = driver.find_element(By.CLASS_NAME, "btn_search")
-        search_button.click()
+        driver.execute_script("arguments[0].click();", search_button)
 
         search_input = driver.find_element(By.NAME, "query")
         search_input.send_keys(keyword)
